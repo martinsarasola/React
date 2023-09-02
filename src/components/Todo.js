@@ -25,7 +25,7 @@ const Todo = () => {
   const handleDeleteTask = (taskId) => {
     dispatch(deleteTask(taskId));
   };
-
+  
   return (
     <div className="todo">
       <h2>Lista de Tareas</h2>

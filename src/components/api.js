@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://pokeapi.co/api/v2'; // URL base de la API de Pokémon
+const BASE_URL = 'https://pokeapi.co/api/v2';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -10,7 +10,7 @@ const api = axios.create({
   }
 });
 
-// Función para obtener una lista de Pokémon
+
 export const getPokemonList = async (limit = 20, offset = 0) => {
   try {
     const response = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
@@ -21,7 +21,7 @@ export const getPokemonList = async (limit = 20, offset = 0) => {
   }
 };
 
-// Otras funciones para obtener detalles de un Pokémon, etc. (según sea necesario)
+
 export const getPokemonDetails = async (url) => {
   try {
     const response = await api.get(url);

@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, toggleTask, deleteTask } from './actions.js';
 
 const Todo = () => {
-  const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState([]);
+  const [taskName, setTaskName] = useState('');
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const dispatch = useDispatch();
 
-  const handleTaskChange = (event) => {
-    setTask(event.target.value);
+  const handleTaskNameChange = (event) => {
+    setTaskName(event.target.value);
   };
 
-  const addTask = () => {
-    if (task.trim() !== '') {
-      setTasks([...tasks, task]);
-      setTask('');
+  const handleAddTask = () => {
+    if (taskName.trim() !== '') {
+      dispatch(addTask({ id: Date.now(), name: taskName, completed: false }));
+      setTaskName('');
     }
   };
 
-  const removeTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
-    setTasks(newTasks);
+  const handleToggleTask = (taskId) => {
+    dispatch(toggleTask(taskId));
+  };
+
+  const handleDeleteTask = (taskId) => {
+    dispatch(deleteTask(taskId));
   };
 
   return (
@@ -28,16 +33,23 @@ const Todo = () => {
         <input
           type="text"
           placeholder="Agregar tarea..."
-          value={task}
-          onChange={handleTaskChange}
+          value={taskName}
+          onChange={handleTaskNameChange}
         />
-        <button onClick={addTask}>Agregar</button>
+        <button onClick={handleAddTask}>Agregar</button>
       </div>
       <ul className="task-list">
-        {tasks.map((task, index) => (
-          <li key={index}>
-            {task} {' '}
-            <button onClick={() => removeTask(index)}>Eliminar</button>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => handleToggleTask(task.id)}
+            />
+            <span className={task.completed ? 'completed' : ''}>
+              {task.name}
+            </span>
+            <button onClick={() => handleDeleteTask(task.id)}>Eliminar</button>
           </li>
         ))}
       </ul>
